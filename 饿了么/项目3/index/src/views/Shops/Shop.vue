@@ -72,7 +72,6 @@ export default {
 }
 .shop {
   width: 100%;
-  background: #fff;
   overflow: visible;
 }
 .nav-bg img {

@@ -16,7 +16,7 @@ const router = new Router({
           redirect:'/home'
         },
         {
-          path: '/me',
+          path: '/me ',
           name: 'me',
           component: () => import ('./views/Me.vue')
         },

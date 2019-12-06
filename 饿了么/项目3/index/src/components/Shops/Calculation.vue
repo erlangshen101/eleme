@@ -1,10 +1,10 @@
 <template>
   <div class="Calculation">
-      <span  @click="jian">
+      <span  @click.stop="jian">
           <i v-show="content.content > 0" class="fa fa-minus"></i>
       </span>
       <span class="con" v-show="content.content > 0">{{content.content}}</span>
-      <span @click="jia">
+      <span @click.stop="jia">
           <i class="fa fa-plus-circle"></i>
       </span>
   </div>
@@ -14,6 +14,8 @@
 export default {
     props: {
         content:Object
+    },
+    created () {
     },
     methods: {
         jia () {

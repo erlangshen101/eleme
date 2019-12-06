@@ -42,7 +42,7 @@
               <strong>{{item.name}}</strong>
               <span>{{item.description}}</span>
             </div>
-            <div class="menu-list" v-for="(value,j) in item.foods" :key="j">
+            <div class="menu-list" @click="xiang(value)" v-for="(value,j) in item.foods" :key="j">
               <img :src="value.image_path" alt="">
               <div class="menu-list-x">
                 <h2>{{value.name}}</h2>
@@ -58,14 +58,18 @@
           </li>
         </ul>
       </div>
-    
     </div>
-    
+    <!-- 购物车 -->
+    <ShopCart :shopInfo="shopInfo" />
+    <!-- 详情页 -->
+    <Foode :svc="svc" :show_svc="show_svc" @cli="show_svc = false"/>
   </div>
 </template>
 
 <script>
+import Foode from './Foode'
 import Calculation from '../../components/Shops/Calculation'
+import ShopCart from './ShopCart'
 import BScroll from 'better-scroll'
 export default {
   data () {
@@ -74,8 +78,9 @@ export default {
       zuoScroll: {}, //左侧滚动对象
       youScroll: {}, //右侧滚动对象
       scrollY: 0 , //右侧菜单当前滚动到的Y值
-      listHeight: [] //12个区 列表高度
-
+      listHeight: [], //12个区 列表高度
+      svc: null,
+      show_svc : false
     };
   },
   created () {
@@ -88,7 +93,7 @@ export default {
         let height1 = this.listHeight[i]
         let height2 = this.listHeight[i + 1]
         // 判断是否在两个高度之间
-        if (this.scrolly >= height1 && this.scrollY < height2) {
+        if (this.scrollY >= height1 && this.scrollY < height2) {
           return i
         }
       }
@@ -112,6 +117,7 @@ export default {
         })
 
         this.shopInfo = res.data
+        console.log(this.shopInfo)
         this.$nextTick ( () => {
           this.scroll ()
           //计算12个区域的高度
@@ -128,10 +134,8 @@ export default {
         click: true
       })
       this.youScroll.on("scroll", pos => {
-        this.scrolly = Math.abs(Math.round(pos.y))
+        this.scrollY = Math.abs(Math.round(pos.y))
       })
-        console.log(this.scrolly)
-
     },
     Toscroll (index) {
       let el = this.$refs.menuy.getElementsByClassName("food-list-hook")[index]
@@ -139,7 +143,6 @@ export default {
     },
     calculateHeight() {
       let foodlist = this.$refs.menuy.getElementsByClassName("food-list-hook")
-      console.log(foodlist)
       // 每个区域的高度
       let height = 0;
       this.listHeight.push(height)
@@ -149,10 +152,16 @@ export default {
         height += item.clientHeight;
         this.listHeight.push(height)
       }
+    },
+    xiang (value) {
+      this.svc = value,
+      this.show_svc = true
     }
   },
   components: {
-    Calculation
+    Calculation,
+    ShopCart,
+    Foode
   }
 }
 </script>
@@ -160,6 +169,7 @@ export default {
 <style scoped>
   .sorder {
     height: calc(100% - 20px);
+    background: #fff;
   }
   .sorder-hv {
     padding: 15px 0 15px 0px;

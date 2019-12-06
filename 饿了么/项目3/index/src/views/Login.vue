@@ -128,6 +128,7 @@ export default {
     height: 100%;
     padding: 40px;
     background: #fff;
+    box-sizing: border-box;
 }
 .logo {
   text-align: center;
